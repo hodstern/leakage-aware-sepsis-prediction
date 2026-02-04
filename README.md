@@ -38,6 +38,24 @@ No raw patient data are included in this repository.
 
 ---
 
+## Dependencies
+
+This project assumes that the official MIMIC-IV derived tables
+from the `mimiciv-code` repository have already been created.
+
+Specifically, the following tables are required:
+
+- vitals_hourly
+- labs_hourly_ml
+- gcs_hourly
+- urine_hourly
+- icustay_static
+
+These tables are generated using the official scripts from:
+https://github.com/MIT-LCP/mimiciv-code
+
+---
+
 ## Feature Engineering (SQL-First)
 - Hourly aggregation aligned to ICU admission
 - No backward-looking or future-aware features at prediction time
