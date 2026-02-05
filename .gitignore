@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.venv/
+venv/
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local exports / data (never commit MIMIC-derived CSVs)
+ml_export_*.csv
+*.parquet
+
+# Results artifacts that are regenerated
+results/predictions_*.csv
+results/metrics_*.json
+
+# Jupyter (if you ever add notebooks)
+.ipynb_checkpoints/
