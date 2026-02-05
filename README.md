@@ -21,7 +21,7 @@ Key themes:
 ## Reproducibility
 - SQL feature generation and labeling are deterministic
 - Train/validation/test splits are fixed and documented
-- Modeling notebooks mirror each other for fair comparison
+- Modeling scripts mirror each other for fair comparison
 
 ---
 
