@@ -21,6 +21,7 @@ Key themes:
 ## Reproducibility
 - SQL feature generation and labeling are deterministic
 - Train/validation/test splits are fixed and documented
+- All splits are performed at the ICU stay level (`stay_id`) and frozen prior to model training to prevent patient- or time-based leakage
 - Modeling scripts mirror each other for fair comparison
 
 ---
@@ -124,7 +125,9 @@ Sepsis is a leading cause of ICU morbidity and mortality. Early detection is cha
 - **Outcome:** `label_sepsis_6h`
 - **Prevalence:** ~3%
 
-All feature engineering, labeling, and data splitting were completed in SQL prior to modeling. Once exported, the database was treated as **immutable**.
+All feature engineering, labeling, and data splitting were completed in SQL prior to modeling. Once exported, the dataset was treated as **immutable**.
+
+The repository contains only code, configuration, and derived outputs, and can be shared without access to protected health information.
 
 No raw patient data are included in this repository.
 
@@ -218,6 +221,7 @@ Key observations:
 - AUROC saturated early and remained stable across models
 - AUPRC improved with nonlinear modeling
 - Logistic regression showed the best calibration
+- At high-recall operating points (e.g., ~80%), precision implies a substantial alert burden, highlighting the need to translate model outputs into clinically meaningful alerting strategies
 
 ---
 
