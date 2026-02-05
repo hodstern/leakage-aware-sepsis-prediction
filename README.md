@@ -30,9 +30,85 @@ Key themes:
 ### 0) Install dependencies
 ```bash
 pip install -r requirements.txt
+```
 
 ---
 
+### 1) Build the derived tables (SQL)
+This project assumes you have a local MIMIC-IV PostgreSQL instance with the required base and derived tables available.
+
+Run the SQL scripts in roughly this order:
+
+1. `sql/hourly/` — hourly concept tables  
+2. `sql/labels/` — sepsis onset and 6-hour labeling  
+3. `sql/features/` — model feature matrix  
+4. `sql/splits/` — fixed train / validation / test split  
+5. `sql/exports/` — export view for machine learning  
+
+(Exact filenames may vary depending on your local setup.)
+
+---
+
+### 2) Export the ML table/view to CSV
+`ml_export_6h.sql` defines a view used for model training. From `psql`, run:
+
+```sql
+\copy (
+  SELECT * FROM mimiciv_derived.ml_export_6h
+) TO 'ml_export_6h.csv' CSV HEADER;
+```
+
+Place `ml_export_6h.csv` in the **repository root** (same directory as `README.md`).
+
+---
+
+### 3) Train baseline models
+From the repository root:
+
+```bash
+python scripts/train_logreg.py
+python scripts/train_xgboost.py
+```
+
+This produces:
+- `results/predictions_logreg.csv`
+- `results/predictions_xgb.csv`
+- `results/metrics_logreg.json`
+- `results/metrics_xgb.json`
+
+---
+
+### 4) Evaluate models and generate figures
+```bash
+python scripts/evaluate.py
+```
+
+This generates:
+- ROC curves → `results/figures/roc_*.png`
+- Precision–Recall curves → `results/figures/pr_*.png`
+- Calibration plots → `results/figures/calibration_*.png`
+
+---
+
+### 5) Expected output structure
+After a successful run, your repository should contain:
+
+```
+results/
+├── figures/
+│   ├── roc_logreg.png
+│   ├── roc_xgb.png
+│   ├── pr_logreg.png
+│   ├── pr_xgb.png
+│   ├── calibration_logreg.png
+│   └── calibration_xgb.png
+├── predictions_logreg.csv
+├── predictions_xgb.csv
+├── metrics_logreg.json
+└── metrics_xgb.json
+```
+
+---
 
 ## Problem Statement
 Sepsis is a leading cause of ICU morbidity and mortality. Early detection is challenging because physiologic deterioration evolves gradually and is tightly coupled to clinician actions.
