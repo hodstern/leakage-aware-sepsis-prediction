@@ -18,6 +18,22 @@ Key themes:
 
 ---
 
+## Reproducibility
+- SQL feature generation and labeling are deterministic
+- Train/validation/test splits are fixed and documented
+- Modeling notebooks mirror each other for fair comparison
+
+---
+
+## Reproduce locally (end-to-end)
+
+### 0) Install dependencies
+```bash
+pip install -r requirements.txt
+
+---
+
+
 ## Problem Statement
 Sepsis is a leading cause of ICU morbidity and mortality. Early detection is challenging because physiologic deterioration evolves gradually and is tightly coupled to clinician actions.
 
@@ -150,13 +166,6 @@ Key observations:
 - Extend to 12h and 24h horizons
 - Post-hoc calibration of tree-based models
 - Translate thresholds into alert burden (e.g., alerts per 100 ICU-hours)
-
----
-
-## Reproducibility
-- SQL feature generation and labeling are deterministic
-- Train/validation/test splits are fixed and documented
-- Modeling notebooks mirror each other for fair comparison
 
 ---
 
