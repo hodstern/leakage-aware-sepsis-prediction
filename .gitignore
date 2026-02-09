@@ -20,5 +20,5 @@ ml_export_*.csv
 results/predictions_*.csv
 results/metrics_*.json
 
-# Jupyter (if you ever add notebooks)
+# Jupyter
 .ipynb_checkpoints/
