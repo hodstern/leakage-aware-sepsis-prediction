@@ -15,57 +15,32 @@ Only project-specific SQL is included. Upstream concept code from
 
 ## Directory layout
 
-indexing/indexes.sql
-  - optional performance indexes
-
-labels/sepsis_onset.sql
-  - defines sepsis onset per ICU stay
-
-labels/sepsis_labels_6h.sql
-  - generates hourly labels for 6h prediction horizon
-
-hourly/icustay_static.sql
-  - static ICU-stay level features
-
-hourly/vitals_hourly.sql
-  - hourly vital sign features
-
-hourly/gcs_hourly.sql
-  - hourly neurological features
-
-hourly/urine_hourly.sql
-  - hourly urine output features
-
-hourly/labs_hourly_ml.sql
-  - hourly laboratory features for ML
-
-features/features_hourly_base.sql
-  - base hourly time spine for modeling
-
-features/features_hourly_with_vitals.sql
-  - adds vital sign features
-
-features/features_hourly_with_gcs.sql
-  - adds GCS features
-
-features/features_hourly_with_sofa.sql
-  - adds SOFA-derived features (optional / exploratory)
-
-features/ml_features_hourly.sql
-  - consolidated hourly feature table
-
-features/clean_ml_features_hourly.sql
-  - final cleaned feature table used for modeling
-
-splits/create_ml_splits.sql
-  - deterministic train/val/test splits
-
-splits/create_ml_splits_sanity.sql
-  - verifies split integrity and leakage
-
-exports/ml_export_6h.sql
-  - final ML-ready dataset export
-
+```
+sql/
+├── indexing/
+│ └── indexes.sql
+├── labels/
+│ ├── sepsis_onset.sql
+│ └── sepsis_labels_6h.sql
+├── hourly/
+│ ├── icustay_static.sql
+│ ├── vitals_hourly.sql
+│ ├── gcs_hourly.sql
+│ ├── urine_hourly.sql
+│ └── labs_hourly_ml.sql
+├── features/
+│ ├── features_hourly_base.sql
+│ ├── features_hourly_with_vitals.sql
+│ ├── features_hourly_with_gcs.sql
+│ ├── features_hourly_with_sofa.sql
+│ ├── ml_features_hourly.sql
+│ └── clean_ml_features_hourly.sql
+├── splits/
+│ ├── create_ml_splits.sql
+│ └── create_ml_splits_sanity.sql
+└── exports/
+└── ml_export_6h.sql
+```
 ---
 
 ## Upstream dependency (not included)
