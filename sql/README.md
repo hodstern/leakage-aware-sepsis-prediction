@@ -36,8 +36,7 @@ sql/
 │ ├── ml_features_hourly.sql
 │ └── clean_ml_features_hourly.sql
 ├── splits/
-│ ├── create_ml_splits.sql
-│ └── create_ml_splits_sanity.sql
+│ └── create_ml_splits.sql
 └── exports/
 └── ml_export_6h.sql
 ```
