@@ -135,19 +135,53 @@ No raw patient data are included in this repository.
 
 ## Dependencies
 
-This project assumes that the official MIMIC-IV derived tables
-from the `mimiciv-code` repository have already been created.
+This project requires a local PostgreSQL installation of **MIMIC-IV v3.1**.
 
-Specifically, the following tables are required:
+### Required base schemas
 
-- vitals_hourly
-- labs_hourly_ml
-- gcs_hourly
-- urine_hourly
-- icustay_static
+- `mimiciv_hosp`
+- `mimiciv_icu`
 
-These tables are generated using the official scripts from:
+Access to MIMIC-IV requires credentialed approval via PhysioNet.
+
+---
+
+### Upstream concept tables
+
+Selected standardized concept tables from the official MIT-LCP repository are required upstream:
+
 https://github.com/MIT-LCP/mimiciv-code
+
+For example, the `sepsis3` table used for outcome definition must be generated prior to running this pipeline.
+
+Only upstream clinical concept definitions are assumed.  
+All feature engineering, labeling, splitting, indexing, and export logic used for modeling are implemented in this repository.
+
+---
+
+### Project SQL pipeline (implemented here)
+
+The `/sql/` directory contains the full leakage-aware feature engineering and labeling workflow:
+
+```
+sql/
+├── hourly/ # Hourly ICU feature construction
+├── labels/ # Sepsis onset + 6h prediction labeling
+├── features/ # Feature matrix assembly and cleaning
+├── splits/ # Immutable stay-level data splits
+├── indexing/ # Performance optimization
+└── exports/ # ML export view definition
+```
+
+
+These scripts generate:
+
+- Hourly feature tables
+- `label_sepsis_6h`
+- Frozen train / validation / test splits
+- `ml_export_6h` (model-ready dataset)
+
+No official hourly tables are required beyond the upstream clinical concepts.
 
 ---
 
