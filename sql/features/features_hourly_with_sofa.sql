@@ -1,28 +1,16 @@
 BEGIN;
 
--- =========================
--- Performance / safety
--- =========================
 SET work_mem = '256MB';
 SET maintenance_work_mem = '2GB';
 SET synchronous_commit = off;
 
--- =========================
--- Drop if exists
--- =========================
 DROP TABLE IF EXISTS mimiciv_derived.features_hourly_with_sofa;
 
--- =========================
--- Create features + SOFA
--- =========================
 CREATE TABLE mimiciv_derived.features_hourly_with_sofa AS
 SELECT
     f.stay_id,
     f.hour,
 
-    -- =========================
-    -- Labs
-    -- =========================
     f.lactate_avg,
     f.lactate_max,
     f.lactate_measured,
@@ -71,23 +59,14 @@ SELECT
     f.hemoglobin_max,
     f.hemoglobin_measured,
 
-    -- =========================
-    -- Vitals
-    -- =========================
     f.heart_rate,
     f.mbp,
     f.resp_rate,
     f.temperature,
     f.spo2,
 
-    -- =========================
-    -- GCS
-    -- =========================
     f.gcs_total,
 
-    -- =========================
-    -- SOFA (24h rolling + subscores)
-    -- =========================
     s.sofa_24hours        AS sofa_total_24h,
 
     s.respiration         AS sofa_respiration,
@@ -102,9 +81,6 @@ LEFT JOIN mimiciv_derived.sofa s
   ON f.stay_id = s.stay_id
  AND f.hour    = s.hr;
 
--- =========================
--- Index
--- =========================
 CREATE INDEX idx_features_hourly_with_sofa_stay_hour
 ON mimiciv_derived.features_hourly_with_sofa (stay_id, hour);
 
