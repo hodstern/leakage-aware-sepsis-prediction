@@ -1,22 +1,13 @@
 BEGIN;
 
--- =========================
--- Performance settings
--- =========================
 SET synchronous_commit = off;
 SET work_mem = '256MB';
 SET maintenance_work_mem = '2GB';
 SET temp_buffers = '512MB';
 SET enable_nestloop = off;
 
--- =========================
--- Drop if exists
--- =========================
 DROP TABLE IF EXISTS mimiciv_derived.labs_hourly_ml;
 
--- =========================
--- Create ML-ready labs table
--- =========================
 CREATE UNLOGGED TABLE mimiciv_derived.labs_hourly_ml AS
 SELECT
     ie.stay_id,
@@ -65,9 +56,6 @@ GROUP BY
     DATE_TRUNC('hour', le.charttime),
     le.itemid;
 
--- =========================
--- Indexes for downstream ML
--- =========================
 CREATE INDEX idx_labs_hourly_ml_stay_hr
 ON mimiciv_derived.labs_hourly_ml (stay_id, hr);
 
