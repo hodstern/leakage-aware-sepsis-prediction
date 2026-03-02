@@ -1,28 +1,16 @@
 BEGIN;
 
--- =========================
--- Performance / safety
--- =========================
 SET work_mem = '256MB';
 SET maintenance_work_mem = '2GB';
 SET synchronous_commit = off;
 
--- =========================
--- Drop if exists
--- =========================
 DROP TABLE IF EXISTS mimiciv_derived.features_hourly_with_gcs;
 
--- =========================
--- Create features + GCS
--- =========================
 CREATE TABLE mimiciv_derived.features_hourly_with_gcs AS
 SELECT
     f.stay_id,
     f.hour,
 
-    -- =========================
-    -- Labs
-    -- =========================
     f.lactate_avg,
     f.lactate_max,
     f.lactate_measured,
@@ -71,18 +59,12 @@ SELECT
     f.hemoglobin_max,
     f.hemoglobin_measured,
 
-    -- =========================
-    -- Vitals
-    -- =========================
     f.heart_rate,
     f.mbp,
     f.resp_rate,
     f.temperature,
     f.spo2,
 
-    -- =========================
-    -- GCS (TOTAL ONLY)
-    -- =========================
     g.gcs AS gcs_total
 
 FROM mimiciv_derived.features_hourly_with_vitals f
@@ -90,9 +72,6 @@ LEFT JOIN mimiciv_derived.gcs_hourly g
   ON f.stay_id = g.stay_id
  AND f.hour    = g.hr;
 
--- =========================
--- Index
--- =========================
 CREATE INDEX idx_features_hourly_with_gcs_stay_hour
 ON mimiciv_derived.features_hourly_with_gcs (stay_id, hour);
 
