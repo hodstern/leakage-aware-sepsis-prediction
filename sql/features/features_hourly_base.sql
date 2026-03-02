@@ -1,28 +1,16 @@
 BEGIN;
 
--- =========================
--- Performance / safety
--- =========================
 SET work_mem = '256MB';
 SET maintenance_work_mem = '2GB';
 SET synchronous_commit = off;
 
--- =========================
--- Drop if exists
--- =========================
 DROP TABLE IF EXISTS mimiciv_derived.features_hourly_base;
 
--- =========================
--- Create base feature table
--- =========================
 CREATE TABLE mimiciv_derived.features_hourly_base AS
 SELECT
     ih.stay_id,
     ih.hr AS hour,
 
-    -- =========================
-    -- Labs (wide, aligned)
-    -- =========================
     l.lactate_avg,
     l.lactate_max,
     l.lactate_measured,
@@ -78,9 +66,6 @@ LEFT JOIN mimiciv_derived.labs_hourly_ml_wide l
 
 WHERE ih.hr BETWEEN 0 AND 47;
 
--- =========================
--- Index for downstream joins
--- =========================
 CREATE INDEX idx_features_hourly_base_stay_hour
 ON mimiciv_derived.features_hourly_base (stay_id, hour);
 
