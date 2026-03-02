@@ -1,28 +1,16 @@
 BEGIN;
 
--- =========================
--- Performance / safety
--- =========================
 SET work_mem = '256MB';
 SET maintenance_work_mem = '2GB';
 SET synchronous_commit = off;
 
--- =========================
--- Drop if exists
--- =========================
 DROP TABLE IF EXISTS mimiciv_derived.features_hourly_with_vitals;
 
--- =========================
--- Create features + vitals
--- =========================
 CREATE TABLE mimiciv_derived.features_hourly_with_vitals AS
 SELECT
     f.stay_id,
     f.hour,
 
-    -- =========================
-    -- Labs
-    -- =========================
     f.lactate_avg,
     f.lactate_max,
     f.lactate_measured,
@@ -71,9 +59,6 @@ SELECT
     f.hemoglobin_max,
     f.hemoglobin_measured,
 
-    -- =========================
-    -- Vitals (from vitals_hourly)
-    -- =========================
     v.heart_rate,
     v.mbp,
     v.resp_rate,
@@ -85,9 +70,6 @@ LEFT JOIN mimiciv_derived.vitals_hourly v
   ON f.stay_id = v.stay_id
  AND f.hour    = v.hr;
 
--- =========================
--- Index
--- =========================
 CREATE INDEX idx_features_hourly_with_vitals_stay_hour
 ON mimiciv_derived.features_hourly_with_vitals (stay_id, hour);
 
